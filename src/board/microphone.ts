@@ -24,11 +24,11 @@ export class Microphone {
   ) {}
 
   microphoneOn() {
-    this.element.style.display = "unset";
+    this.element.style.fill = "#cd2e3a";
   }
 
   private microphoneOff() {
-    this.element.style.display = "none";
+    this.element.style.fill = "#4D4D4D";
   }
 
   setThreshold(threshold: "low" | "high", value: number) {

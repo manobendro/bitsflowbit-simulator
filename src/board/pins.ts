@@ -170,10 +170,10 @@ export class TouchPin extends BasePin {
 
   render() {
     if (this.ui) {
-      const fill = !!this.state.value ? "#00c800" : "url(#an)";
-      this.ui.element.querySelectorAll("path").forEach((p) => {
+      const fill = !!this.state.value ? "#00c800" : "#D6B13B";
+      this.ui.element.querySelectorAll("ellipse, path").forEach((p) => {
         if (!p.classList.contains("no-edit")) {
-          p.style.fill = fill;
+          (p as SVGElement).style.fill = fill;
         }
       });
     }

@@ -1,4 +1,5 @@
-import svgText from "../microbit-drawing.svg";
+import svgText from "../bitsflowbit.svg";
+// import svgText from "../microbit-drawing.svg";
 import { Accelerometer } from "./accelerometer";
 import { Audio } from "./audio";
 import { Button } from "./buttons";
@@ -156,7 +157,7 @@ export class Board {
     private svg: SVGElement
   ) {
     this.display = new Display(
-      Array.from(this.svg.querySelector("#LEDsOn")!.querySelectorAll("use"))
+      Array.from(this.svg.querySelector("#rgb_matrix_led_on")!.querySelectorAll("g[id^='led']"))
     );
     const onChange = this.notifications.onStateChange;
     this.buttons = [
@@ -177,7 +178,7 @@ export class Board {
     this.pins[MICROBIT_HAL_PIN_FACE] = new TouchPin(
       "pinLogo",
       {
-        element: this.svg.querySelector("#Logo")!,
+        element: this.svg.querySelector("#logo")!,
         label: () => this.formattedMessage({ id: "touch-logo" }),
       },
       onChange
@@ -207,7 +208,7 @@ export class Board {
     this.accelerometer = new Accelerometer(onChange);
     this.compass = new Compass();
     this.microphone = new Microphone(
-      this.svg.querySelector("#LitMicrophone")!,
+      this.svg.querySelector("#mic_icon")!,
       onChange
     );
 

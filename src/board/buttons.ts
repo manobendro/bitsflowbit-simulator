@@ -114,8 +114,8 @@ export class Button {
 
   render() {
     const fill = !!this.state.value ? "#00c800" : "#000000";
-    this.element.querySelectorAll("circle").forEach((c) => {
-      c.style.fill = fill;
+    this.element.querySelectorAll("path.circle").forEach((c) => {
+      (c as SVGPathElement).style.fill = fill;
     });
   }
 

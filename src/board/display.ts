@@ -61,7 +61,7 @@ export class Display {
     for (let x = 0; x < 5; ++x) {
       for (let y = 0; y < 5; ++y) {
         const on = this.state[x][y];
-        const led = this.leds[x * 5 + y];
+        const led = this.leds[y * 5 + x];
         if (on) {
           const bright = brightMap[this.state[x][y]];
           led.style.display = "inline";
