@@ -1,8 +1,8 @@
-# MicroPython-micro:bit simulator
+# MicroPython-bitsflow:bit simulator
 
 ## Try it out
 
-To try the simulator use the [micro:bit Python Editor](https://python.microbit.org).
+To try the simulator use the [bitsflow:bit Python Editor](https://python.bitsflowlab.xyz).
 
 The rest of this page explains how to embed the simulator in an application
 and develop the simulator software.
@@ -18,13 +18,13 @@ This software is under the MIT open source license.
 The simulator is designed to be embedded into other web applications
 as an iframe. The embedding API and URLs are not yet stable and are
 subject to change. If you are interested in embedding the simulator
-in your application please [get in touch](mailto:support@microbit.org).
+in your application please [get in touch](mailto:support@bitsflowlab.xyz).
 
 The URL to embed is https://python-simulator.usermbit.org/v/0.1/simulator.html.
 You can embed this in your application directly. We would love to hear about
 your use of the simulator so please open an issue to get in touch.
 
-The iframe provides the micro:bit board user interface and some limited
+The iframe provides the bitsflow:bit board user interface and some limited
 interactions. It does not provide a terminal for serial/the REPL or any UI to change the board sensor state.
 
 A value for a brand color can be passed to the simulator via a query
@@ -182,7 +182,7 @@ If you send string data from the program then it will be prepended with the thre
 }
 ```
 
-<td>Update the micro:bit filesystem and restart the program. You must send this in response to the request_flash message.
+<td>Update the bitsflow:bit filesystem and restart the program. You must send this in response to the request_flash message.
 
 <tr>
 <td>stop
@@ -269,7 +269,7 @@ If you send string data from the program then it will be prepended with the thre
 }
 ```
 
-<td>Radio input (received by the user's program as if sent from another micro:bit) as bytes.
+<td>Radio input (received by the user's program as if sent from another bitsflow:bit) as bytes.
 If you want to send string data then prepend the byte array with the three bytes <code>0x01</code>, <code>0x00</code>, <code>0x01</code>.
 Otherwise, the user will need to use <code>radio.receive_bytes</code> or <code>radio.receive_full</code>. The input is assumed to be sent to the currently configured radio group.
 
@@ -280,7 +280,7 @@ Otherwise, the user will need to use <code>radio.receive_bytes</code> or <code>r
 ### Build steps
 
 The simulator is a variant of the MicroPython codal_port which is compiled with
-Emscripten. It provides a simulated micro:bit (including REPL) in the browser.
+Emscripten. It provides a simulated bitsflow:bit (including REPL) in the browser.
 
 To build, first fetch the submodules (don't use recursive fetch):
 
@@ -308,7 +308,7 @@ embed the simulator via this URL as it may be removed at any time. CloudFlare's
 GitHub integration will comment on PRs with deployment details.
 
 Branches in this repository are also deployed via CircleCI to https://review-python-simulator.usermbit.org/{branchName}/. This requires the user pushing code to have
-permissions for the relevant Micro:bit Educational Foundation infrastructure.
+permissions for the relevant bitsflow:bit Educational Foundation infrastructure.
 
 Similarly, the main branch is deployed to https://python-simulator.usermbit.org/staging/.
 
@@ -338,8 +338,8 @@ breathe in our daily work life and within our projects. Our open-source
 projects are no exception. We have an active community which spans the globe
 and we welcome and encourage participation and contributions to our projects
 by everyone. We work to foster a positive, open, inclusive and supportive
-environment and trust that our community respects the micro:bit code of
-conduct. Please see our [code of conduct](https://microbit.org/safeguarding/)
+environment and trust that our community respects the bitsflow:bit code of
+conduct. Please see our [code of conduct](https://bitsflowlab.xyz/safeguarding/)
 which outlines our expectations for all those that participate in our
 community and details on how to report any concerns and what would happen
 should breaches occur.
