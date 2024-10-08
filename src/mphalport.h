@@ -1,7 +1,7 @@
 #include "py/obj.h"
 #include "py/ringbuf.h"
-#include "microbithal.h"
-#include "modmicrobit.h"
+#include "bitsflowhal.h"
+#include "modbitsflow.h"
 
 // Constants for the nRF needed by the radio module.
 #define RADIO_MODE_MODE_Nrf_1Mbit (0)

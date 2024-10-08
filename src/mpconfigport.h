@@ -44,8 +44,8 @@
 #define MICROPY_VM_HOOK_POLL \
     if (--vm_hook_divisor == 0) { \
         vm_hook_divisor = MICROPY_VM_HOOK_COUNT; \
-        extern void microbit_hal_background_processing(void); \
-        microbit_hal_background_processing(); \
+        extern void bitsflow_hal_background_processing(void); \
+        bitsflow_hal_background_processing(); \
     }
 #define MICROPY_VM_HOOK_LOOP                    MICROPY_VM_HOOK_POLL
 #define MICROPY_VM_HOOK_RETURN                  MICROPY_VM_HOOK_POLL
@@ -73,14 +73,14 @@
 #define MICROPY_PY_BUILTINS_FROZENSET           (1)
 #define MICROPY_PY_BUILTINS_INPUT               (1)
 #define MICROPY_PY_BUILTINS_HELP                (1)
-#define MICROPY_PY_BUILTINS_HELP_TEXT           microbit_help_text
+#define MICROPY_PY_BUILTINS_HELP_TEXT           bitsflow_help_text
 #define MICROPY_PY_BUILTINS_HELP_MODULES        (1)
 #define MICROPY_PY___FILE__                     (0)
 #define MICROPY_PY_MICROPYTHON_MEM_INFO         (1)
 #define MICROPY_PY_COLLECTIONS_ORDEREDDICT      (1)
 #define MICROPY_PY_IO                           (0)
 #define MICROPY_PY_SYS_MAXSIZE                  (1)
-#define MICROPY_PY_SYS_PLATFORM                 "microbit"
+#define MICROPY_PY_SYS_PLATFORM                 "bitsflow"
 
 // Extended modules
 #define MICROPY_PY_UERRNO                       (1)
@@ -102,10 +102,10 @@
     { MP_ROM_QSTR(MP_QSTR_open), MP_ROM_PTR(&mp_builtin_open_obj) },
 #endif
 
-#define MICROBIT_RELEASE "2.1.1"
-#define MICROBIT_BOARD_NAME "micro:bit"
-#define MICROPY_HW_BOARD_NAME MICROBIT_BOARD_NAME " v" MICROBIT_RELEASE
-#define MICROPY_HW_MCU_NAME "nRF52833"
+#define BITSFLOW_RELEASE "0.0.1"
+#define BITSFLOW_BOARD_NAME "bitsflow"
+#define MICROPY_HW_BOARD_NAME BITSFLOW_BOARD_NAME " v" BITSFLOW_RELEASE
+#define MICROPY_HW_MCU_NAME "esp32s3"
 
 #define MP_STATE_PORT MP_STATE_VM
 
@@ -114,7 +114,7 @@ extern const struct _mp_obj_module_t audio_module;
 extern const struct _mp_obj_module_t log_module;
 extern const struct _mp_obj_module_t love_module;
 extern const struct _mp_obj_module_t machine_module;
-extern const struct _mp_obj_module_t microbit_module;
+extern const struct _mp_obj_module_t bitsflow_module;
 extern const struct _mp_obj_module_t music_module;
 extern const struct _mp_obj_module_t os_module;
 extern const struct _mp_obj_module_t power_module;
@@ -129,7 +129,7 @@ extern const struct _mp_obj_module_t utime_module;
     { MP_ROM_QSTR(MP_QSTR_log), MP_ROM_PTR(&log_module) }, \
     { MP_ROM_QSTR(MP_QSTR_love), MP_ROM_PTR(&love_module) }, \
     { MP_ROM_QSTR(MP_QSTR_machine), MP_ROM_PTR(&machine_module) }, \
-    { MP_ROM_QSTR(MP_QSTR_microbit), MP_ROM_PTR(&microbit_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_bitsflow), MP_ROM_PTR(&bitsflow_module) }, \
     { MP_ROM_QSTR(MP_QSTR_music), MP_ROM_PTR(&music_module) }, \
     { MP_ROM_QSTR(MP_QSTR_os), MP_ROM_PTR(&os_module) }, \
     { MP_ROM_QSTR(MP_QSTR_power), MP_ROM_PTR(&power_module) }, \
@@ -145,7 +145,7 @@ extern const struct _mp_obj_module_t utime_module;
     void *audio_source; \
     void *speech_data; \
     struct _music_data_t *music_data; \
-    struct _microbit_soft_timer_entry_t *soft_timer_heap; \
+    struct _bitsflow_soft_timer_entry_t *soft_timer_heap; \
 
 #define MP_SSIZE_MAX (0x7fffffff)
 

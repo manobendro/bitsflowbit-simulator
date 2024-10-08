@@ -1,4 +1,4 @@
-from microbit import display, sleep
+from bitsflow import display, sleep
 import random
 import machine
 

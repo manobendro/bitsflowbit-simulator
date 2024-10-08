@@ -2,9 +2,9 @@ import { DataLogging } from "./data-logging";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { LogEntry } from ".";
 import {
-  MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS,
-  MICROBIT_HAL_LOG_TIMESTAMP_NONE,
-  MICROBIT_HAL_LOG_TIMESTAMP_SECONDS,
+  BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS,
+  BITSFLOW_HAL_LOG_TIMESTAMP_NONE,
+  BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS,
 } from "./constants";
 
 describe("DataLogging", () => {
@@ -85,7 +85,7 @@ describe("DataLogging", () => {
   });
 
   it("uses timestamp", () => {
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS);
     logging.beginRow();
     logging.logData("a", "1");
     logging.endRow();
@@ -105,10 +105,10 @@ describe("DataLogging", () => {
   });
 
   it("allows change of timestamp before logged output", () => {
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS);
     logging.beginRow();
     logging.logData("a", "1");
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_SECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS);
     logging.endRow();
 
     expect(log).toEqual([
@@ -120,11 +120,11 @@ describe("DataLogging", () => {
   });
 
   it("allows change of timestamp after logged output (but appends)", () => {
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS);
     logging.beginRow();
     logging.logData("a", "1");
     logging.endRow();
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_SECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS);
     logging.beginRow();
     logging.logData("a", "2");
     logging.endRow();
@@ -142,11 +142,11 @@ describe("DataLogging", () => {
   });
 
   it("allows change of timestamp to none after logged output", () => {
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS);
     logging.beginRow();
     logging.logData("a", "1");
     logging.endRow();
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_NONE);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_NONE);
     logging.beginRow();
     logging.logData("a", "2");
     logging.endRow();
@@ -208,7 +208,7 @@ describe("DataLogging", () => {
   });
 
   it("deletes the log resetting mirroring but remembering timestamp", () => {
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_SECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS);
     logging.setMirroring(true);
     logging.beginRow();
     logging.logData("a", "1");
@@ -232,7 +232,7 @@ describe("DataLogging", () => {
   });
 
   it("dispose resets timestamp if nothing written", () => {
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_SECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS);
     logging.boardStopped();
     logging.initialize();
 
@@ -248,7 +248,7 @@ describe("DataLogging", () => {
   });
 
   it("dispose keeps timestamp if header written", () => {
-    logging.setTimestamp(MICROBIT_HAL_LOG_TIMESTAMP_SECONDS);
+    logging.setTimestamp(BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS);
     logging.beginRow();
     logging.logData("b", "");
     logging.endRow();

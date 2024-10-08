@@ -1,7 +1,7 @@
 #include <emscripten.h>
 #include "py/mphal.h"
 #include "py/stream.h"
-#include "microbithal_js.h"
+#include "bitsflowhal_js.h"
 #include "jshal.h"
 
 static uint8_t stdin_ringbuf_array[260];
@@ -26,7 +26,7 @@ int mp_hal_stdin_rx_chr(void) {
             return c;
         }
         mp_handle_pending(true);
-        microbit_hal_idle();
+        bitsflow_hal_idle();
     }
 }
 

@@ -16,11 +16,11 @@ import * as Synthesizer from "./sound-synthesizer";
 import * as MusicalProgressions from "./musical-progressions";
 
 /**
- * Adapted from lancaster-university/codal-microbit-v2
- * https://github.com/lancaster-university/codal-microbit-v2/blob/master/source/SoundExpressions.cpp
+ * Adapted from lancaster-university/codal-bitsflow-v2
+ * https://github.com/lancaster-university/codal-bitsflow-v2/blob/master/source/SoundExpressions.cpp
  */
 export function parseSoundEffects(notes: string) {
-  // https://github.com/lancaster-university/codal-microbit-v2/blob/master/source/SoundExpressions.cpp#L57
+  // https://github.com/lancaster-university/codal-bitsflow-v2/blob/master/source/SoundExpressions.cpp#L57
 
   // 72 characters of sound data comma separated
   const charsPerEffect = 72;
@@ -69,7 +69,7 @@ export interface SoundEffect {
 }
 
 export function parseSoundExpression(soundChars: string, fx: SoundEffect) {
-  // https://github.com/lancaster-university/codal-microbit-v2/blob/master/source/SoundExpressions.cpp#L115
+  // https://github.com/lancaster-university/codal-bitsflow-v2/blob/master/source/SoundExpressions.cpp#L115
 
   // Encoded as a sequence of zero padded decimal strings.
   // This encoding is worth reconsidering if we can!

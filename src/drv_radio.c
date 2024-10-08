@@ -37,8 +37,8 @@
 
 static uint8_t rx_buf_size = 0;
 
-void microbit_radio_enable(microbit_radio_config_t *config) {
-    microbit_radio_disable();
+void bitsflow_radio_enable(bitsflow_radio_config_t *config) {
+    bitsflow_radio_disable();
 
     uint8_t group = config->prefix0;
     mp_js_radio_enable(group, config->max_payload, config->queue_len);
@@ -48,7 +48,7 @@ void microbit_radio_enable(microbit_radio_config_t *config) {
     MP_STATE_PORT(radio_buf) = m_new(uint8_t, rx_buf_size);
 }
 
-void microbit_radio_disable(void) {
+void bitsflow_radio_disable(void) {
     mp_js_radio_disable();
 
     // free any old buffers
@@ -60,11 +60,11 @@ void microbit_radio_disable(void) {
 }
 
 // Exposed so JavaScript can write directly into the max_payload sized buffer.
-uint8_t *microbit_radio_rx_buffer() {
+uint8_t *bitsflow_radio_rx_buffer() {
     return MP_STATE_PORT(radio_buf);
 }
 
-void microbit_radio_update_config(microbit_radio_config_t *config) {
+void bitsflow_radio_update_config(bitsflow_radio_config_t *config) {
     // This is not called if the max_payload or queue length change.
     // Instead we are disabled then enabled.
     uint8_t group = config->prefix0;
@@ -72,15 +72,15 @@ void microbit_radio_update_config(microbit_radio_config_t *config) {
 }
 
 // This assumes the radio is enabled.
-void microbit_radio_send(const void *buf, size_t len, const void *buf2, size_t len2) {
+void bitsflow_radio_send(const void *buf, size_t len, const void *buf2, size_t len2) {
     mp_js_radio_send(buf, len, buf2, len2);
 }
 
-const uint8_t *microbit_radio_peek(void) {
+const uint8_t *bitsflow_radio_peek(void) {
     // This call writes to the rx buffer.
     return mp_js_radio_peek();
 }
 
-void microbit_radio_pop(void) {
+void bitsflow_radio_pop(void) {
     mp_js_radio_pop();
 }

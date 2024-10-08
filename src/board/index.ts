@@ -1,30 +1,30 @@
 import svgText from "../bitsflowbit.svg";
-// import svgText from "../microbit-drawing.svg";
+// import svgText from "../bitsflow-drawing.svg";
 import { Accelerometer } from "./accelerometer";
 import { Audio } from "./audio";
 import { Button } from "./buttons";
 import { Compass } from "./compass";
 import {
-  MICROBIT_HAL_PIN_FACE,
-  MICROBIT_HAL_PIN_P0,
-  MICROBIT_HAL_PIN_P1,
-  MICROBIT_HAL_PIN_P2,
-  MICROBIT_HAL_PIN_P3,
-  MICROBIT_HAL_PIN_P4,
-  MICROBIT_HAL_PIN_P5,
-  MICROBIT_HAL_PIN_P6,
-  MICROBIT_HAL_PIN_P7,
-  MICROBIT_HAL_PIN_P8,
-  MICROBIT_HAL_PIN_P9,
-  MICROBIT_HAL_PIN_P10,
-  MICROBIT_HAL_PIN_P11,
-  MICROBIT_HAL_PIN_P12,
-  MICROBIT_HAL_PIN_P13,
-  MICROBIT_HAL_PIN_P14,
-  MICROBIT_HAL_PIN_P15,
-  MICROBIT_HAL_PIN_P16,
-  MICROBIT_HAL_PIN_P19,
-  MICROBIT_HAL_PIN_P20,
+  BITSFLOW_HAL_PIN_FACE,
+  BITSFLOW_HAL_PIN_P0,
+  BITSFLOW_HAL_PIN_P1,
+  BITSFLOW_HAL_PIN_P2,
+  BITSFLOW_HAL_PIN_P3,
+  BITSFLOW_HAL_PIN_P4,
+  BITSFLOW_HAL_PIN_P5,
+  BITSFLOW_HAL_PIN_P6,
+  BITSFLOW_HAL_PIN_P7,
+  BITSFLOW_HAL_PIN_P8,
+  BITSFLOW_HAL_PIN_P9,
+  BITSFLOW_HAL_PIN_P10,
+  BITSFLOW_HAL_PIN_P11,
+  BITSFLOW_HAL_PIN_P12,
+  BITSFLOW_HAL_PIN_P13,
+  BITSFLOW_HAL_PIN_P14,
+  BITSFLOW_HAL_PIN_P15,
+  BITSFLOW_HAL_PIN_P16,
+  BITSFLOW_HAL_PIN_P19,
+  BITSFLOW_HAL_PIN_P20,
 } from "./constants";
 import * as conversions from "./conversions";
 import { DataLogging } from "./data-logging";
@@ -175,7 +175,7 @@ export class Board {
       ),
     ];
     this.pins = Array(33);
-    this.pins[MICROBIT_HAL_PIN_FACE] = new TouchPin(
+    this.pins[BITSFLOW_HAL_PIN_FACE] = new TouchPin(
       "pinLogo",
       {
         element: this.svg.querySelector("#logo")!,
@@ -183,25 +183,25 @@ export class Board {
       },
       onChange
     );
-    this.pins[MICROBIT_HAL_PIN_P0] = new TouchPin("pin0", null, onChange);
-    this.pins[MICROBIT_HAL_PIN_P1] = new TouchPin("pin1", null, onChange);
-    this.pins[MICROBIT_HAL_PIN_P2] = new TouchPin("pin2", null, onChange);
-    this.pins[MICROBIT_HAL_PIN_P3] = new StubPin("pin3");
-    this.pins[MICROBIT_HAL_PIN_P4] = new StubPin("pin4");
-    this.pins[MICROBIT_HAL_PIN_P5] = new StubPin("pin5");
-    this.pins[MICROBIT_HAL_PIN_P6] = new StubPin("pin6");
-    this.pins[MICROBIT_HAL_PIN_P7] = new StubPin("pin7");
-    this.pins[MICROBIT_HAL_PIN_P8] = new StubPin("pin8");
-    this.pins[MICROBIT_HAL_PIN_P9] = new StubPin("pin9");
-    this.pins[MICROBIT_HAL_PIN_P10] = new StubPin("pin10");
-    this.pins[MICROBIT_HAL_PIN_P11] = new StubPin("pin11");
-    this.pins[MICROBIT_HAL_PIN_P12] = new StubPin("pin12");
-    this.pins[MICROBIT_HAL_PIN_P13] = new StubPin("pin13");
-    this.pins[MICROBIT_HAL_PIN_P14] = new StubPin("pin14");
-    this.pins[MICROBIT_HAL_PIN_P15] = new StubPin("pin15");
-    this.pins[MICROBIT_HAL_PIN_P16] = new StubPin("pin16");
-    this.pins[MICROBIT_HAL_PIN_P19] = new StubPin("pin19");
-    this.pins[MICROBIT_HAL_PIN_P20] = new StubPin("pin20");
+    this.pins[BITSFLOW_HAL_PIN_P0] = new TouchPin("pin0", null, onChange);
+    this.pins[BITSFLOW_HAL_PIN_P1] = new TouchPin("pin1", null, onChange);
+    this.pins[BITSFLOW_HAL_PIN_P2] = new TouchPin("pin2", null, onChange);
+    this.pins[BITSFLOW_HAL_PIN_P3] = new StubPin("pin3");
+    this.pins[BITSFLOW_HAL_PIN_P4] = new StubPin("pin4");
+    this.pins[BITSFLOW_HAL_PIN_P5] = new StubPin("pin5");
+    this.pins[BITSFLOW_HAL_PIN_P6] = new StubPin("pin6");
+    this.pins[BITSFLOW_HAL_PIN_P7] = new StubPin("pin7");
+    this.pins[BITSFLOW_HAL_PIN_P8] = new StubPin("pin8");
+    this.pins[BITSFLOW_HAL_PIN_P9] = new StubPin("pin9");
+    this.pins[BITSFLOW_HAL_PIN_P10] = new StubPin("pin10");
+    this.pins[BITSFLOW_HAL_PIN_P11] = new StubPin("pin11");
+    this.pins[BITSFLOW_HAL_PIN_P12] = new StubPin("pin12");
+    this.pins[BITSFLOW_HAL_PIN_P13] = new StubPin("pin13");
+    this.pins[BITSFLOW_HAL_PIN_P14] = new StubPin("pin14");
+    this.pins[BITSFLOW_HAL_PIN_P15] = new StubPin("pin15");
+    this.pins[BITSFLOW_HAL_PIN_P16] = new StubPin("pin16");
+    this.pins[BITSFLOW_HAL_PIN_P19] = new StubPin("pin19");
+    this.pins[BITSFLOW_HAL_PIN_P20] = new StubPin("pin20");
 
     this.audio = new Audio();
     this.temperature = new RangeSensor("temperature", -5, 50, 21, "°C");
@@ -250,14 +250,14 @@ export class Board {
     });
     const module = new ModuleWrapper(wrapped);
     this.audio.initializeCallbacks({
-      defaultAudioCallback: wrapped._microbit_hal_audio_ready_callback,
-      speechAudioCallback: wrapped._microbit_hal_audio_speech_ready_callback,
+      defaultAudioCallback: wrapped._bitsflow_hal_audio_ready_callback,
+      speechAudioCallback: wrapped._bitsflow_hal_audio_speech_ready_callback,
     });
     this.accelerometer.initializeCallbacks(
-      wrapped._microbit_hal_gesture_callback
+      wrapped._bitsflow_hal_gesture_callback
     );
     this.microphone.initializeCallbacks(
-      wrapped._microbit_hal_level_detector_callback
+      wrapped._bitsflow_hal_level_detector_callback
     );
     return module;
   }
@@ -282,10 +282,10 @@ export class Board {
       radio: this.radio.state,
       buttonA: this.buttons[0].state,
       buttonB: this.buttons[1].state,
-      pinLogo: this.pins[MICROBIT_HAL_PIN_FACE].state,
-      pin0: this.pins[MICROBIT_HAL_PIN_P0].state,
-      pin1: this.pins[MICROBIT_HAL_PIN_P1].state,
-      pin2: this.pins[MICROBIT_HAL_PIN_P2].state,
+      pinLogo: this.pins[BITSFLOW_HAL_PIN_FACE].state,
+      pin0: this.pins[BITSFLOW_HAL_PIN_P0].state,
+      pin1: this.pins[BITSFLOW_HAL_PIN_P1].state,
+      pin2: this.pins[BITSFLOW_HAL_PIN_P2].state,
 
       accelerometerX: this.accelerometer.state.accelerometerX,
       accelerometerY: this.accelerometer.state.accelerometerY,
@@ -329,19 +329,19 @@ export class Board {
         break;
       }
       case "pinLogo": {
-        this.pins[MICROBIT_HAL_PIN_FACE].setValue(value);
+        this.pins[BITSFLOW_HAL_PIN_FACE].setValue(value);
         break;
       }
       case "pin0": {
-        this.pins[MICROBIT_HAL_PIN_P0].setValue(value);
+        this.pins[BITSFLOW_HAL_PIN_P0].setValue(value);
         break;
       }
       case "pin1": {
-        this.pins[MICROBIT_HAL_PIN_P1].setValue(value);
+        this.pins[BITSFLOW_HAL_PIN_P1].setValue(value);
         break;
       }
       case "pin2": {
-        this.pins[MICROBIT_HAL_PIN_P2].setValue(value);
+        this.pins[BITSFLOW_HAL_PIN_P2].setValue(value);
         break;
       }
       case "lightLevel": {

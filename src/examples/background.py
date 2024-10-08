@@ -1,4 +1,4 @@
-from microbit import *
+from bitsflow import *
 import music
 
 music.play(['f', 'a', 'c', 'e'], wait=False)

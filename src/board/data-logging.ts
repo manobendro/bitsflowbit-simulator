@@ -1,13 +1,13 @@
 import { LogEntry } from ".";
 import {
-  MICROBIT_HAL_DEVICE_NO_RESOURCES,
-  MICROBIT_HAL_DEVICE_OK,
-  MICROBIT_HAL_LOG_TIMESTAMP_DAYS,
-  MICROBIT_HAL_LOG_TIMESTAMP_HOURS,
-  MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS,
-  MICROBIT_HAL_LOG_TIMESTAMP_MINUTES,
-  MICROBIT_HAL_LOG_TIMESTAMP_NONE,
-  MICROBIT_HAL_LOG_TIMESTAMP_SECONDS,
+  BITSFLOW_HAL_DEVICE_NO_RESOURCES,
+  BITSFLOW_HAL_DEVICE_OK,
+  BITSFLOW_HAL_LOG_TIMESTAMP_DAYS,
+  BITSFLOW_HAL_LOG_TIMESTAMP_HOURS,
+  BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS,
+  BITSFLOW_HAL_LOG_TIMESTAMP_MINUTES,
+  BITSFLOW_HAL_LOG_TIMESTAMP_NONE,
+  BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS,
 } from "./constants";
 import { DataLoggingState, State } from "./state";
 
@@ -19,7 +19,7 @@ const maxSizeBytes = 118780;
 export class DataLogging {
   private mirroring: boolean = false;
   private size: number = 0;
-  private timestamp = MICROBIT_HAL_LOG_TIMESTAMP_NONE;
+  private timestamp = BITSFLOW_HAL_LOG_TIMESTAMP_NONE;
   private timestampOnLastEndRow: number | undefined;
   private headingsChanged: boolean = false;
   private headings: string[] = [];
@@ -45,7 +45,7 @@ export class DataLogging {
   beginRow() {
     this.row = new Array(this.headings.length);
     this.row.fill("");
-    return MICROBIT_HAL_DEVICE_OK;
+    return BITSFLOW_HAL_DEVICE_OK;
   }
 
   endRow() {
@@ -54,7 +54,7 @@ export class DataLogging {
     }
     if (
       this.timestamp !== this.timestampOnLastEndRow &&
-      this.timestamp !== MICROBIT_HAL_LOG_TIMESTAMP_NONE
+      this.timestamp !== BITSFLOW_HAL_LOG_TIMESTAMP_NONE
     ) {
       // New timestamp column required. Put it first if there's been no output.
       if (this.size === 0) {
@@ -72,7 +72,7 @@ export class DataLogging {
     }
     const validData = this.row.some((x) => x?.length > 0);
     if (validData) {
-      if (this.timestamp !== MICROBIT_HAL_LOG_TIMESTAMP_NONE) {
+      if (this.timestamp !== BITSFLOW_HAL_LOG_TIMESTAMP_NONE) {
         this.logData(
           timestampToHeading(this.timestamp),
           formatTimestamp(this.timestamp, this.currentTimeMillis())
@@ -93,14 +93,14 @@ export class DataLogging {
             dataLogging: this.state,
           });
         }
-        return MICROBIT_HAL_DEVICE_NO_RESOURCES;
+        return BITSFLOW_HAL_DEVICE_NO_RESOURCES;
       }
       this.size += entrySize;
       this.output(entry);
     }
     this.timestampOnLastEndRow = this.timestamp;
     this.row = undefined;
-    return MICROBIT_HAL_DEVICE_OK;
+    return BITSFLOW_HAL_DEVICE_OK;
   }
 
   logData(key: string, value: string) {
@@ -116,7 +116,7 @@ export class DataLogging {
       this.row[index] = value;
     }
 
-    return MICROBIT_HAL_DEVICE_OK;
+    return BITSFLOW_HAL_DEVICE_OK;
   }
 
   private output(entry: LogEntry) {
@@ -138,7 +138,7 @@ export class DataLogging {
     this.resetNonFlashStateExceptTimestamp();
     // Keep the timestamp if we could restore it from a persisted log.
     if (this.size === 0) {
-      this.timestamp = MICROBIT_HAL_LOG_TIMESTAMP_NONE;
+      this.timestamp = BITSFLOW_HAL_LOG_TIMESTAMP_NONE;
     }
   }
 
@@ -190,17 +190,17 @@ function timestampToHeading(timestamp: number): string {
 
 function timestampToUnitString(timestamp: number): string {
   switch (timestamp) {
-    case MICROBIT_HAL_LOG_TIMESTAMP_DAYS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_DAYS:
       return "days";
-    case MICROBIT_HAL_LOG_TIMESTAMP_HOURS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_HOURS:
       return "hours";
-    case MICROBIT_HAL_LOG_TIMESTAMP_MINUTES:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_MINUTES:
       return "minutes";
-    case MICROBIT_HAL_LOG_TIMESTAMP_SECONDS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS:
       return "seconds";
-    case MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS:
       return "milliseconds";
-    case MICROBIT_HAL_LOG_TIMESTAMP_NONE:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_NONE:
     // Fall through
     default:
       throw new Error("Not valid");
@@ -208,7 +208,7 @@ function timestampToUnitString(timestamp: number): string {
 }
 
 function formatTimestamp(format: number, currentTime: number): string {
-  if (format === MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS) {
+  if (format === BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS) {
     return currentTime.toString(); // No fractional part.
   }
   return (currentTime / millisInFormat(format)).toFixed(2);
@@ -216,15 +216,15 @@ function formatTimestamp(format: number, currentTime: number): string {
 
 function millisInFormat(format: number) {
   switch (format) {
-    case MICROBIT_HAL_LOG_TIMESTAMP_MILLISECONDS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_MILLISECONDS:
       return 1;
-    case MICROBIT_HAL_LOG_TIMESTAMP_SECONDS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_SECONDS:
       return 1000;
-    case MICROBIT_HAL_LOG_TIMESTAMP_MINUTES:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_MINUTES:
       return 1000 * 60;
-    case MICROBIT_HAL_LOG_TIMESTAMP_HOURS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_HOURS:
       return 1000 * 60 * 60;
-    case MICROBIT_HAL_LOG_TIMESTAMP_DAYS:
+    case BITSFLOW_HAL_LOG_TIMESTAMP_DAYS:
       return 1000 * 60 * 60 * 24;
     default:
       throw new Error();

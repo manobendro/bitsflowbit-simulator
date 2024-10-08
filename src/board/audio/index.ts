@@ -27,7 +27,7 @@ export class Audio {
   soundExpression: BufferedAudio | undefined;
   currentSoundExpressionCallback: undefined | (() => void);
 
-  constructor() {}
+  constructor() { }
 
   initializeCallbacks({
     defaultAudioCallback,
@@ -48,12 +48,12 @@ export class Audio {
     this.default = new BufferedAudio(
       this.context,
       this.volumeNode,
-      defaultAudioCallback
+      () => { if (defaultAudioCallback) defaultAudioCallback(); }
     );
     this.speech = new BufferedAudio(
       this.context,
       this.volumeNode,
-      speechAudioCallback
+      () => { if (speechAudioCallback) speechAudioCallback(); }
     );
     this.soundExpression = new BufferedAudio(
       this.context,
@@ -178,7 +178,7 @@ class BufferedAudio {
     private context: AudioContext,
     private destination: AudioNode,
     private callback: () => void
-  ) {}
+  ) { }
 
   init(sampleRate: number) {
     this.sampleRate = sampleRate;
@@ -210,6 +210,6 @@ class BufferedAudio {
 
   dispose() {
     // Prevent calls into WASM when the buffer nodes finish.
-    this.callback = () => {};
+    this.callback = () => { };
   }
 }

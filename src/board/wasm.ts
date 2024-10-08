@@ -9,11 +9,11 @@ export interface EmscriptenModule {
   // See EXPORTED_FUNCTIONS in the Makefile.
   _mp_js_request_stop(): void;
   _mp_js_force_stop(): void;
-  _microbit_hal_audio_ready_callback(): void;
-  _microbit_hal_audio_speech_ready_callback(): void;
-  _microbit_hal_gesture_callback(gesture: number): void;
-  _microbit_hal_level_detector_callback(level: number): void;
-  _microbit_radio_rx_buffer(): number;
+  _bitsflow_hal_audio_ready_callback(): void;
+  _bitsflow_hal_audio_speech_ready_callback(): void;
+  _bitsflow_hal_gesture_callback(gesture: number): void;
+  _bitsflow_hal_level_detector_callback(level: number): void;
+  _bitsflow_radio_rx_buffer(): number;
 
   HEAPU8: Uint8Array;
 
@@ -49,7 +49,7 @@ export class ModuleWrapper {
   }
 
   writeRadioRxBuffer(packet: Uint8Array) {
-    const buf = this.module._microbit_radio_rx_buffer!();
+    const buf = this.module._bitsflow_radio_rx_buffer!();
     this.module.HEAPU8.set(packet, buf);
     return buf;
   }

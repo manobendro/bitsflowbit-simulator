@@ -1,4 +1,4 @@
-from microbit import *
+from bitsflow import *
 
 # You don't hear this one because we don't wait then play another which stops this one.
 display.show(Image.HAPPY)

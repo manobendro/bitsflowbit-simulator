@@ -34,7 +34,7 @@
 
 #if MICROPY_MBFS
 
-// This is a version of microbitfs for the simulator.
+// This is a version of bitsflowfs for the simulator.
 // File data is stored externally in JavaScripti and access via mp_js_hal_filesystem_xxx() functions.
 
 #define MAX_FILENAME_LENGTH (120)
@@ -156,16 +156,16 @@ STATIC mp_obj_t uos_mbfs_file_name(mp_obj_t self_in) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(uos_mbfs_file_name_obj, uos_mbfs_file_name);
 
-STATIC mp_obj_t microbit_file_writable(mp_obj_t self) {
+STATIC mp_obj_t bitsflow_file_writable(mp_obj_t self) {
     return mp_obj_new_bool(((mbfs_file_obj_t *)MP_OBJ_TO_PTR(self))->writable);
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(microbit_file_writable_obj, microbit_file_writable);
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(bitsflow_file_writable_obj, bitsflow_file_writable);
 
 STATIC const mp_rom_map_elem_t uos_mbfs_file_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR___enter__), MP_ROM_PTR(&mp_identity_obj) },
     { MP_ROM_QSTR(MP_QSTR___exit__), MP_ROM_PTR(&uos_mbfs_file___exit___obj) },
     { MP_ROM_QSTR(MP_QSTR_name), MP_ROM_PTR(&uos_mbfs_file_name_obj) },
-    { MP_ROM_QSTR(MP_QSTR_writable), MP_ROM_PTR(&microbit_file_writable_obj) },
+    { MP_ROM_QSTR(MP_QSTR_writable), MP_ROM_PTR(&bitsflow_file_writable_obj) },
 
     { MP_ROM_QSTR(MP_QSTR_close), MP_ROM_PTR(&mp_stream_close_obj) },
     { MP_ROM_QSTR(MP_QSTR_read), MP_ROM_PTR(&mp_stream_read_obj) },
@@ -181,7 +181,7 @@ STATIC void check_file_open(mbfs_file_obj_t *self) {
     }
 }
 
-STATIC mp_uint_t microbit_file_read(mp_obj_t self_in, void *buf_in, mp_uint_t size, int *errcode) {
+STATIC mp_uint_t bitsflow_file_read(mp_obj_t self_in, void *buf_in, mp_uint_t size, int *errcode) {
     mbfs_file_obj_t *self = MP_OBJ_TO_PTR(self_in);
     check_file_open(self);
     if (self->writable) {
@@ -202,7 +202,7 @@ STATIC mp_uint_t microbit_file_read(mp_obj_t self_in, void *buf_in, mp_uint_t si
     return bytes_read;
 }
 
-STATIC mp_uint_t microbit_file_write(mp_obj_t self_in, const void *buf, mp_uint_t size, int *errcode) {
+STATIC mp_uint_t bitsflow_file_write(mp_obj_t self_in, const void *buf, mp_uint_t size, int *errcode) {
     mbfs_file_obj_t *self = MP_OBJ_TO_PTR(self_in);
     check_file_open(self);
     if (!self->writable) {
@@ -217,7 +217,7 @@ STATIC mp_uint_t microbit_file_write(mp_obj_t self_in, const void *buf, mp_uint_
     return size;
 }
 
-STATIC mp_uint_t microbit_file_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_t arg, int *errcode) {
+STATIC mp_uint_t bitsflow_file_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_t arg, int *errcode) {
     mbfs_file_obj_t *self = MP_OBJ_TO_PTR(self_in);
 
     if (request == MP_STREAM_CLOSE) {
@@ -230,9 +230,9 @@ STATIC mp_uint_t microbit_file_ioctl(mp_obj_t self_in, mp_uint_t request, uintpt
 }
 
 STATIC const mp_stream_p_t textio_stream_p = {
-    .read = microbit_file_read,
-    .write = microbit_file_write,
-    .ioctl = microbit_file_ioctl,
+    .read = bitsflow_file_read,
+    .write = bitsflow_file_write,
+    .ioctl = bitsflow_file_ioctl,
     .is_text = true,
 };
 
@@ -245,9 +245,9 @@ const mp_obj_type_t uos_mbfs_textio_type = {
 
 
 STATIC const mp_stream_p_t fileio_stream_p = {
-    .read = microbit_file_read,
-    .write = microbit_file_write,
-    .ioctl = microbit_file_ioctl,
+    .read = bitsflow_file_read,
+    .write = bitsflow_file_write,
+    .ioctl = bitsflow_file_ioctl,
 };
 
 const mp_obj_type_t uos_mbfs_fileio_type = {
@@ -257,7 +257,7 @@ const mp_obj_type_t uos_mbfs_fileio_type = {
     .locals_dict = (mp_obj_dict_t *)&uos_mbfs_file_locals_dict,
 };
 
-STATIC mbfs_file_obj_t *microbit_file_open(const char *name, size_t name_len, bool write, bool binary) {
+STATIC mbfs_file_obj_t *bitsflow_file_open(const char *name, size_t name_len, bool write, bool binary) {
     if (name_len > MAX_FILENAME_LENGTH) {
         return NULL;
     }
@@ -313,7 +313,7 @@ STATIC void file_close(void *self_in) {
 }
 
 mp_lexer_t *mp_lexer_new_from_file(const char *filename) {
-    mbfs_file_obj_t *file = microbit_file_open(filename, strlen(filename), false, false);
+    mbfs_file_obj_t *file = bitsflow_file_open(filename, strlen(filename), false, false);
     if (file == NULL) {
         mp_raise_OSError(MP_ENOENT);
     }
@@ -354,7 +354,7 @@ mp_obj_t mp_builtin_open(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs) 
     }
     size_t name_len;
     const char *filename = mp_obj_str_get_data(args[0], &name_len);
-    mbfs_file_obj_t *res = microbit_file_open(filename, name_len, read == 0, text == 0);
+    mbfs_file_obj_t *res = bitsflow_file_open(filename, name_len, read == 0, text == 0);
     if (res == NULL) {
         mp_raise_OSError(MP_ENOENT);
     }

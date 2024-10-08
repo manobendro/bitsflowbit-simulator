@@ -1,11 +1,11 @@
-// Implementation of the microbit HAL for a JavaScript/browser environment.
+// Implementation of the bitsflow HAL for a JavaScript/browser environment.
 
 #include <emscripten.h>
 #include "py/runtime.h"
 #include "py/mphal.h"
 #include "shared/runtime/interrupt_char.h"
-#include "microbithal.h"
-#include "microbithal_js.h"
+#include "bitsflowhal.h"
+#include "bitsflowhal_js.h"
 #include "jshal.h"
 
 #define BITMAP_FONT_ASCII_START 32
@@ -19,28 +19,28 @@ const unsigned char pendolino3[475] = {
 
 static uint16_t button_state[2];
 
-void microbit_hal_init(void) {
+void bitsflow_hal_init(void) {
     mp_js_hal_init();
 }
 
 // Sim only deinit.
-void microbit_hal_deinit(void) {
+void bitsflow_hal_deinit(void) {
     // If we don't do this then the radio has a reference to the previous heap.
     // Can be revisited if we stop/restart in way that resets WASM state.
-    extern void microbit_radio_disable(void);
-    microbit_radio_disable();
+    extern void bitsflow_radio_disable(void);
+    bitsflow_radio_disable();
 
     mp_js_hal_deinit();
 }
 
-static void microbit_hal_process_events(void) {
-    // Call microbit_hal_timer_callback() every 6ms.
+static void bitsflow_hal_process_events(void) {
+    // Call bitsflow_hal_timer_callback() every 6ms.
     static uint32_t last_ms = 0;
     uint32_t ms = mp_hal_ticks_ms();
     if (ms - last_ms >= 6) {
         last_ms = ms;
-        extern void microbit_hal_timer_callback(void);
-        microbit_hal_timer_callback();
+        extern void bitsflow_hal_timer_callback(void);
+        bitsflow_hal_timer_callback();
     }
 
     // Process stdin.
@@ -54,92 +54,92 @@ static void microbit_hal_process_events(void) {
     }
 }
 
-void microbit_hal_background_processing(void) {
-    microbit_hal_process_events();
+void bitsflow_hal_background_processing(void) {
+    bitsflow_hal_process_events();
     emscripten_sleep(0);
 }
 
-void microbit_hal_idle(void) {
-    microbit_hal_process_events();
+void bitsflow_hal_idle(void) {
+    bitsflow_hal_process_events();
     emscripten_sleep(5);
 }
 
-void microbit_hal_reset(void) {
+void bitsflow_hal_reset(void) {
     mp_js_hal_reset();
 }
 
-void microbit_hal_panic(int code) {
+void bitsflow_hal_panic(int code) {
     mp_js_hal_panic(code);
 }
 
-int microbit_hal_temperature(void) {
+int bitsflow_hal_temperature(void) {
     return mp_js_hal_temperature();
 }
 
-void microbit_hal_power_clear_wake_sources(void) {
+void bitsflow_hal_power_clear_wake_sources(void) {
     // Stub, unsupported.
 }
 
-void microbit_hal_power_wake_on_button(int button, bool wake_on_active) {
+void bitsflow_hal_power_wake_on_button(int button, bool wake_on_active) {
     // Stub, unsupported.
 }
 
-void microbit_hal_power_wake_on_pin(int pin, bool wake_on_active) {
+void bitsflow_hal_power_wake_on_pin(int pin, bool wake_on_active) {
     // Stub, unsupported.
 }
 
-void microbit_hal_power_off(void) {
+void bitsflow_hal_power_off(void) {
     // Stub, unsupported.
 }
 
-bool microbit_hal_power_deep_sleep(bool wake_on_ms, uint32_t ms) {
+bool bitsflow_hal_power_deep_sleep(bool wake_on_ms, uint32_t ms) {
     // Stub, unsupported, always claim we were interrupted.
     return true;
 }
 
-void microbit_hal_pin_set_pull(int pin, int pull) {
+void bitsflow_hal_pin_set_pull(int pin, int pull) {
     //pin_obj[pin]->setPull(pin_pull_mode_mapping[pull]);
     //pin_pull_state[pin] = pull;
 }
 
-int microbit_hal_pin_get_pull(int pin) {
+int bitsflow_hal_pin_get_pull(int pin) {
     //return pin_pull_state[pin];
     return 0;
 }
 
-int microbit_hal_pin_set_analog_period_us(int pin, int period) {
+int bitsflow_hal_pin_set_analog_period_us(int pin, int period) {
     // Change the audio virtual-pin period if the pin is the special mixer pin.
-    if (pin == MICROBIT_HAL_PIN_MIXER) {
+    if (pin == BITSFLOW_HAL_PIN_MIXER) {
         mp_js_hal_audio_period_us(period);
         return 0;
     }
     return mp_js_hal_pin_set_analog_period_us(pin, period);
 }
 
-int microbit_hal_pin_get_analog_period_us(int pin) {
+int bitsflow_hal_pin_get_analog_period_us(int pin) {
     return mp_js_hal_pin_get_analog_period_us(pin);
 }
 
-void microbit_hal_pin_set_touch_mode(int pin, int mode) {
+void bitsflow_hal_pin_set_touch_mode(int pin, int mode) {
     //pin_obj[pin]->isTouched((TouchMode)mode);
 }
 
-int microbit_hal_pin_read(int pin) {
+int bitsflow_hal_pin_read(int pin) {
     //return pin_obj[pin]->getDigitalValue();
     return 0;
 }
 
-void microbit_hal_pin_write(int pin, int value) {
+void bitsflow_hal_pin_write(int pin, int value) {
     //pin_obj[pin]->setDigitalValue(value);
 }
 
-int microbit_hal_pin_read_analog_u10(int pin) {
+int bitsflow_hal_pin_read_analog_u10(int pin) {
     //return pin_obj[pin]->getAnalogValue();
     return 0;
 }
 
-void microbit_hal_pin_write_analog_u10(int pin, int value) {
-    if (pin == MICROBIT_HAL_PIN_MIXER) {
+void bitsflow_hal_pin_write_analog_u10(int pin, int value) {
+    if (pin == BITSFLOW_HAL_PIN_MIXER) {
         mp_js_hal_audio_amplitude_u10(value);
         return;
     }
@@ -148,12 +148,12 @@ void microbit_hal_pin_write_analog_u10(int pin, int value) {
     */
 }
 
-int microbit_hal_pin_is_touched(int pin) {
-    if (pin == MICROBIT_HAL_PIN_FACE || pin == MICROBIT_HAL_PIN_P0 || pin == MICROBIT_HAL_PIN_P1 || pin == MICROBIT_HAL_PIN_P2) {
+int bitsflow_hal_pin_is_touched(int pin) {
+    if (pin == BITSFLOW_HAL_PIN_FACE || pin == BITSFLOW_HAL_PIN_P0 || pin == BITSFLOW_HAL_PIN_P1 || pin == BITSFLOW_HAL_PIN_P2) {
         return mp_js_hal_pin_is_touched(pin);
     }
     /*
-    if (pin == MICROBIT_HAL_PIN_FACE) {
+    if (pin == BITSFLOW_HAL_PIN_FACE) {
         // For touch on the face/logo, delegate to the TouchButton instance.
         return uBit.logo.buttonActive();
     }
@@ -162,11 +162,11 @@ int microbit_hal_pin_is_touched(int pin) {
     return 0;
 }
 
-void microbit_hal_pin_write_ws2812(int pin, const uint8_t *buf, size_t len) {
+void bitsflow_hal_pin_write_ws2812(int pin, const uint8_t *buf, size_t len) {
     //neopixel_send_buffer(*pin_obj[pin], buf, len);
 }
 
-int microbit_hal_i2c_init(int scl, int sda, int freq) {
+int bitsflow_hal_i2c_init(int scl, int sda, int freq) {
     /*
     // TODO set pins
     int ret = uBit.i2c.setFrequency(freq);
@@ -177,7 +177,7 @@ int microbit_hal_i2c_init(int scl, int sda, int freq) {
     return 0;
 }
 
-int microbit_hal_i2c_readfrom(uint8_t addr, uint8_t *buf, size_t len, int stop) {
+int bitsflow_hal_i2c_readfrom(uint8_t addr, uint8_t *buf, size_t len, int stop) {
     /*
     int ret = uBit.i2c.read(addr << 1, (uint8_t *)buf, len, !stop);
     if (ret != DEVICE_OK) {
@@ -187,7 +187,7 @@ int microbit_hal_i2c_readfrom(uint8_t addr, uint8_t *buf, size_t len, int stop) 
     return 0;
 }
 
-int microbit_hal_i2c_writeto(uint8_t addr, const uint8_t *buf, size_t len, int stop) {
+int bitsflow_hal_i2c_writeto(uint8_t addr, const uint8_t *buf, size_t len, int stop) {
     /*
     int ret = uBit.i2c.write(addr << 1, (uint8_t *)buf, len, !stop);
     if (ret != DEVICE_OK) {
@@ -197,7 +197,7 @@ int microbit_hal_i2c_writeto(uint8_t addr, const uint8_t *buf, size_t len, int s
     return 0;
 }
 
-int microbit_hal_uart_init(int tx, int rx, int baudrate, int bits, int parity, int stop) {
+int bitsflow_hal_uart_init(int tx, int rx, int baudrate, int bits, int parity, int stop) {
     /*
     // TODO set bits, parity stop
     int ret = uBit.serial.redirect(*pin_obj[tx], *pin_obj[rx]);
@@ -214,7 +214,7 @@ int microbit_hal_uart_init(int tx, int rx, int baudrate, int bits, int parity, i
 
 //static NRF52SPI *spi = NULL;
 
-int microbit_hal_spi_init(int sclk, int mosi, int miso, int frequency, int bits, int mode) {
+int bitsflow_hal_spi_init(int sclk, int mosi, int miso, int frequency, int bits, int mode) {
     /*
     if (spi != NULL) {
         delete spi;
@@ -232,7 +232,7 @@ int microbit_hal_spi_init(int sclk, int mosi, int miso, int frequency, int bits,
     return 0;
 }
 
-int microbit_hal_spi_transfer(size_t len, const uint8_t *src, uint8_t *dest) {
+int bitsflow_hal_spi_transfer(size_t len, const uint8_t *src, uint8_t *dest) {
     /*
     int ret;
     if (dest == NULL) {
@@ -245,7 +245,7 @@ int microbit_hal_spi_transfer(size_t len, const uint8_t *src, uint8_t *dest) {
     return 0;
 }
 
-int microbit_hal_button_state(int button, int *was_pressed, int *num_presses) {
+int bitsflow_hal_button_state(int button, int *was_pressed, int *num_presses) {
     /*
     Button *b = button_obj[button];
     if (was_pressed != NULL || num_presses != NULL) {
@@ -291,7 +291,7 @@ int microbit_hal_button_state(int button, int *was_pressed, int *num_presses) {
     return mp_js_hal_button_is_pressed(button);
 }
 
-void microbit_hal_display_enable(int value) {
+void bitsflow_hal_display_enable(int value) {
     /*
     if (value) {
         uBit.display.enable();
@@ -301,91 +301,91 @@ void microbit_hal_display_enable(int value) {
     */
 }
 
-void microbit_hal_display_clear(void) {
+void bitsflow_hal_display_clear(void) {
     mp_js_hal_display_clear();
 }
 
-int microbit_hal_display_get_pixel(int x, int y) {
+int bitsflow_hal_display_get_pixel(int x, int y) {
     return mp_js_hal_display_get_pixel(x, y);
 }
 
-void microbit_hal_display_set_pixel(int x, int y, int bright) {
+void bitsflow_hal_display_set_pixel(int x, int y, int bright) {
     mp_js_hal_display_set_pixel(x, y, bright);
 }
 
-int microbit_hal_display_read_light_level(void) {
+int bitsflow_hal_display_read_light_level(void) {
     return mp_js_hal_display_read_light_level();
 }
 
-void microbit_hal_accelerometer_get_sample(int axis[3]) {
+void bitsflow_hal_accelerometer_get_sample(int axis[3]) {
     axis[0] = mp_js_hal_accelerometer_get_x();
     axis[1] = mp_js_hal_accelerometer_get_y();
     axis[2] = mp_js_hal_accelerometer_get_z();
 }
 
-int microbit_hal_accelerometer_get_gesture(void) {
+int bitsflow_hal_accelerometer_get_gesture(void) {
     return mp_js_hal_accelerometer_get_gesture();
 }
 
-void microbit_hal_accelerometer_set_range(int r) {
+void bitsflow_hal_accelerometer_set_range(int r) {
     return mp_js_hal_accelerometer_set_range(r);
 }
 
-int microbit_hal_compass_is_calibrated(void) {
+int bitsflow_hal_compass_is_calibrated(void) {
     // Always calibrated in the simulator.
     return 1;
 }
 
-void microbit_hal_compass_clear_calibration(void) {
+void bitsflow_hal_compass_clear_calibration(void) {
     // No calibration to clear.
 }
 
-void microbit_hal_compass_calibrate(void) {
+void bitsflow_hal_compass_calibrate(void) {
     // No calibration to set.
 }
 
-void microbit_hal_compass_get_sample(int axis[3]) {
+void bitsflow_hal_compass_get_sample(int axis[3]) {
     axis[0] = mp_js_hal_compass_get_x();
     axis[1] = mp_js_hal_compass_get_y();
     axis[2] = mp_js_hal_compass_get_z();
 }
 
-int microbit_hal_compass_get_field_strength(void) {
+int bitsflow_hal_compass_get_field_strength(void) {
     return mp_js_hal_compass_get_field_strength();
 }
 
-int microbit_hal_compass_get_heading(void) {
+int bitsflow_hal_compass_get_heading(void) {
     return mp_js_hal_compass_get_heading();
 }
 
-const uint8_t *microbit_hal_get_font_data(char c) {
+const uint8_t *bitsflow_hal_get_font_data(char c) {
     if (c < BITMAP_FONT_ASCII_START || c > BITMAP_FONT_ASCII_END)
         return NULL;
 
     return pendolino3 + (c-BITMAP_FONT_ASCII_START) * ((1 + (BITMAP_FONT_WIDTH / 8)) * BITMAP_FONT_HEIGHT);
 }
 
-void microbit_hal_log_delete(bool full_erase) {
+void bitsflow_hal_log_delete(bool full_erase) {
     mp_js_hal_log_delete(full_erase);
 }
 
-void microbit_hal_log_set_mirroring(bool serial) {
+void bitsflow_hal_log_set_mirroring(bool serial) {
     mp_js_hal_log_set_mirroring(serial);
 }
 
-void microbit_hal_log_set_timestamp(int period) {
+void bitsflow_hal_log_set_timestamp(int period) {
     mp_js_hal_log_set_timestamp(period);
 }
 
-int microbit_hal_log_begin_row(void) {
+int bitsflow_hal_log_begin_row(void) {
     return mp_js_hal_log_begin_row();
 }
 
-int microbit_hal_log_end_row(void) {
+int bitsflow_hal_log_end_row(void) {
     return mp_js_hal_log_end_row();
 }
 
-int microbit_hal_log_data(const char *key, const char *value) {
+int bitsflow_hal_log_data(const char *key, const char *value) {
     return mp_js_hal_log_data(key, value);
 }
 
@@ -394,7 +394,7 @@ uint32_t rng_generate_random_word(void) {
     return mp_js_rng_generate_random_word();
 }
 
-void microbit_hal_audio_select_pin(int pin) {
+void bitsflow_hal_audio_select_pin(int pin) {
     /*
     if (pin < 0) {
         uBit.audio.setPinEnabled(false);
@@ -405,51 +405,51 @@ void microbit_hal_audio_select_pin(int pin) {
     */
 }
 
-void microbit_hal_audio_select_speaker(bool enable) {
+void bitsflow_hal_audio_select_speaker(bool enable) {
     /*
     uBit.audio.setSpeakerEnabled(enable);
     */
 }
 
 // Input value has range 0-255 inclusive.
-void microbit_hal_audio_set_volume(int value) {
+void bitsflow_hal_audio_set_volume(int value) {
     mp_js_hal_audio_set_volume(value);
 }
 
-void microbit_hal_sound_synth_callback(int event) {
-    // We don't use this callback. Instead microbit_hal_audio_is_expression_active
+void bitsflow_hal_sound_synth_callback(int event) {
+    // We don't use this callback. Instead bitsflow_hal_audio_is_expression_active
     // calls through to JS which has this state.
 }
 
-bool microbit_hal_audio_is_expression_active(void) {
+bool bitsflow_hal_audio_is_expression_active(void) {
     return mp_js_hal_audio_is_expression_active();
 }
 
-void microbit_hal_audio_play_expression(const char *expr) {
+void bitsflow_hal_audio_play_expression(const char *expr) {
     mp_js_hal_audio_play_expression(expr);
 }
 
-void microbit_hal_audio_stop_expression(void) {
+void bitsflow_hal_audio_stop_expression(void) {
     mp_js_hal_audio_stop_expression();
 }
 
-void microbit_hal_audio_init(uint32_t sample_rate) {
+void bitsflow_hal_audio_init(uint32_t sample_rate) {
    mp_js_hal_audio_init(sample_rate);
 }
 
-void microbit_hal_audio_write_data(const uint8_t *buf, size_t num_samples) {
+void bitsflow_hal_audio_write_data(const uint8_t *buf, size_t num_samples) {
     mp_js_hal_audio_write_data(buf, num_samples);
 }
 
-void microbit_hal_audio_speech_init(uint32_t sample_rate) {
+void bitsflow_hal_audio_speech_init(uint32_t sample_rate) {
     mp_js_hal_audio_speech_init(sample_rate);
 }
 
-void microbit_hal_audio_speech_write_data(const uint8_t *buf, size_t num_samples) {
+void bitsflow_hal_audio_speech_write_data(const uint8_t *buf, size_t num_samples) {
     mp_js_hal_audio_speech_write_data(buf, num_samples);
 }
 
-void microbit_hal_microphone_init(void) {
+void bitsflow_hal_microphone_init(void) {
     // This does not implement the use of an external microphone.
     // It turns on the microphone indicator light on the sim board.
     mp_js_hal_microphone_init();
@@ -467,7 +467,7 @@ void microbit_hal_microphone_init(void) {
     */
 }
 
-void microbit_hal_microphone_set_threshold(int kind, int value) {
+void bitsflow_hal_microphone_set_threshold(int kind, int value) {
     mp_js_hal_microphone_set_threshold(kind, value);
     /*
     value = value * SOUND_LEVEL_MAXIMUM / 255;
@@ -479,7 +479,7 @@ void microbit_hal_microphone_set_threshold(int kind, int value) {
     */
 }
 
-int microbit_hal_microphone_get_level(void) {
+int bitsflow_hal_microphone_get_level(void) {
     return mp_js_hal_microphone_get_level();
     /*
     if (level == NULL) {

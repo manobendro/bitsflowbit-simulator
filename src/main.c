@@ -38,13 +38,13 @@
 #include "shared/runtime/pyexec.h"
 #include "drv_system.h"
 #include "drv_display.h"
-#include "modmicrobit.h"
-#include "microbithal_js.h"
+#include "modbitsflow.h"
+#include "bitsflowhal_js.h"
 
 // Set to true if a soft-timer callback can use mp_sched_exception to propagate out an exception.
-bool microbit_outer_nlr_will_handle_soft_timer_exceptions;
+bool bitsflow_outer_nlr_will_handle_soft_timer_exceptions;
 
-void microbit_pyexec_file(const char *filename);
+void bitsflow_pyexec_file(const char *filename);
 
 bool stop_requested = 0;
 
@@ -61,9 +61,9 @@ void mp_js_force_stop(void) {
 // As we use asyncify you can await this call.
 void mp_js_main(int heap_size) {
     while (!stop_requested) {
-        microbit_hal_init();
-        microbit_system_init();
-        microbit_display_init();
+        bitsflow_hal_init();
+        bitsflow_system_init();
+        bitsflow_display_init();
 
         #if MICROPY_ENABLE_GC
         char *heap = (char *)malloc(heap_size * sizeof(char));
@@ -81,10 +81,10 @@ void mp_js_main(int heap_size) {
             const char *main_py = "main.py";
             if (mp_import_stat(main_py) == MP_IMPORT_STAT_FILE) {
                 // exec("main.py")
-                microbit_pyexec_file(main_py);
+                bitsflow_pyexec_file(main_py);
             } else {
-                // from microbit import *
-                mp_import_all(mp_import_name(MP_QSTR_microbit, mp_const_empty_tuple, MP_OBJ_NEW_SMALL_INT(0)));
+                // from bitsflow import *
+                mp_import_all(mp_import_name(MP_QSTR_bitsflow, mp_const_empty_tuple, MP_OBJ_NEW_SMALL_INT(0)));
             }
         }
 
@@ -101,15 +101,15 @@ void mp_js_main(int heap_size) {
         }
 
         mp_printf(MP_PYTHON_PRINTER, "MPY: soft reboot\n");
-        //microbit_soft_timer_deinit();
-        microbit_hal_deinit();
+        //bitsflow_soft_timer_deinit();
+        bitsflow_hal_deinit();
         gc_sweep_all();
         mp_deinit();
         free(heap);
     }
 }
 
-STATIC void microbit_display_exception(mp_obj_t exc_in) {
+STATIC void bitsflow_display_exception(mp_obj_t exc_in) {
     // Construct the message string ready for display.
     mp_uint_t n, *values;
     mp_obj_exception_get_traceback(exc_in, &n, &values);
@@ -133,9 +133,9 @@ STATIC void microbit_display_exception(mp_obj_t exc_in) {
     nlr_buf_t nlr;
     if (nlr_push(&nlr) == 0) {
         mp_hal_set_interrupt_char(CHAR_CTRL_C);
-        microbit_display_show((void *)&microbit_const_image_sad_obj);
+        bitsflow_display_show((void *)&bitsflow_const_image_sad_obj);
         mp_hal_delay_ms(1000);
-        microbit_display_scroll(vstr_null_terminated_str(&vstr));
+        bitsflow_display_scroll(vstr_null_terminated_str(&vstr));
         nlr_pop();
     } else {
         // Uncaught exception, just ignore it.
@@ -145,7 +145,7 @@ STATIC void microbit_display_exception(mp_obj_t exc_in) {
     vstr_clear(&vstr);
 }
 
-void microbit_pyexec_file(const char *filename) {
+void bitsflow_pyexec_file(const char *filename) {
     nlr_buf_t nlr;
     if (nlr_push(&nlr) == 0) {
         // Parse and comple the file.
@@ -172,7 +172,7 @@ void microbit_pyexec_file(const char *filename) {
 
             // Print exception to the display, but not if it's KeyboardInterrupt.
             if (!mp_obj_is_subclass_fast(exc_type, MP_OBJ_FROM_PTR(&mp_type_KeyboardInterrupt))) {
-                microbit_display_exception(MP_OBJ_FROM_PTR(nlr.ret_val));
+                bitsflow_display_exception(MP_OBJ_FROM_PTR(nlr.ret_val));
             }
         }
     }

@@ -1,5 +1,5 @@
 # Imports go at the top
-from microbit import *
+from bitsflow import *
 import log
 
 

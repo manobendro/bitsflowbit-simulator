@@ -3,7 +3,7 @@
 import { RangeSensor } from "./state";
 import { clamp } from "./util";
 
-// Carried across from microbit_hal_display_set_pixel.
+// Carried across from bitsflow_hal_display_set_pixel.
 const brightMap = [0, 20, 40, 60, 80, 120, 160, 190, 220, 255];
 
 export class Display {

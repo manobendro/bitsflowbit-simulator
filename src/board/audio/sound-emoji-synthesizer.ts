@@ -8,7 +8,7 @@
 
 import { SoundEffect } from "./sound-expressions";
 
-// https://github.com/lancaster-university/codal-microbit-v2/blob/master/inc/SoundEmojiSynthesizer.h#L30
+// https://github.com/lancaster-university/codal-bitsflow-v2/blob/master/inc/SoundEmojiSynthesizer.h#L30
 export const EMOJI_SYNTHESIZER_SAMPLE_RATE = 44100;
 export const EMOJI_SYNTHESIZER_TONE_WIDTH_F = 1024;
 export const EMOJI_SYNTHESIZER_TONE_WIDTH = 1024;

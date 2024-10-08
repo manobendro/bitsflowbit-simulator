@@ -1,4 +1,4 @@
-from microbit import *
+from bitsflow import *
 
 display.scroll("Hello")
 display.scroll("World", wait=False)

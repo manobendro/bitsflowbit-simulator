@@ -1,4 +1,4 @@
-from microbit import *
+from bitsflow import *
 
 while True:
     while pin_logo.is_touched():

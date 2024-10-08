@@ -1,4 +1,4 @@
-from microbit import *
+from bitsflow import *
 
 # Unsupported in the simulator
 @micropython.asm_thumb

@@ -1,4 +1,4 @@
-from microbit import *
+from bitsflow import *
 
 last = None
 while True:

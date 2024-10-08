@@ -1,5 +1,5 @@
 # Imports go at the top
-from microbit import *
+from bitsflow import *
 
 # Code in a 'while True:' loop repeats forever
 while True:

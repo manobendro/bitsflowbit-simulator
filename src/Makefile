@@ -1,8 +1,9 @@
 # Makefile to build WASM and simulator JS.
 
 # Build upon the codal_port code.
-CODAL_PORT = $(abspath ../lib/micropython-microbit-v2/src/codal_port)
-CODAL_APP = $(abspath ../lib/micropython-microbit-v2/src/codal_app)
+# CODAL_PORT = $(abspath ../lib/micropython-microbit-v2/src/codal_port)
+# CODAL_APP = $(abspath ../lib/micropython-microbit-v2/src/codal_app)
+CODAL_PORT = $(abspath ./bitsflow)
 
 MICROPY_ROM_TEXT_COMPRESSION ?= 1
 FROZEN_MANIFEST ?= $(CODAL_PORT)/manifest.py
@@ -20,13 +21,13 @@ CC = emcc
 LD = emcc
 
 MP_VER_FILE = $(HEADER_BUILD)/mpversion.h
-MBIT_VER_FILE = $(HEADER_BUILD)/microbitversion.h
+MBIT_VER_FILE = $(HEADER_BUILD)/bitsflowversion.h
 
 LOCAL_LIB_DIR = ../lib/micropython-microbit-v2/lib
 
 INC += -I.
 INC += -I$(CODAL_PORT)
-INC += -I$(CODAL_APP)
+# INC += -I$(CODAL_APP)
 INC += -I$(LOCAL_LIB_DIR)
 INC += -I$(TOP)
 INC += -I$(BUILD)
@@ -49,7 +50,7 @@ JSFLAGS += -s ASYNCIFY_STACK_SIZE=262144
 JSFLAGS += -s EXIT_RUNTIME
 JSFLAGS += -s MODULARIZE=1
 JSFLAGS += -s EXPORT_NAME=createModule
-JSFLAGS += -s EXPORTED_FUNCTIONS="['_mp_js_main','_microbit_hal_audio_ready_callback','_microbit_hal_audio_speech_ready_callback','_microbit_hal_gesture_callback','_microbit_hal_level_detector_callback','_microbit_radio_rx_buffer','_mp_js_force_stop','_mp_js_request_stop']"
+JSFLAGS += -s EXPORTED_FUNCTIONS="['_mp_js_main','_bitsflow_hal_audio_ready_callback','_bitsflow_hal_audio_speech_ready_callback','_bitsflow_hal_gesture_callback','_bitsflow_hal_level_detector_callback','_bitsflow_radio_rx_buffer','_mp_js_force_stop','_mp_js_request_stop']"
 JSFLAGS += -s EXPORTED_RUNTIME_METHODS="['ccall', 'cwrap']" --js-library jshal.js
 
 ifdef DEBUG
@@ -58,8 +59,8 @@ endif
 
 SRC_C += \
 	drv_radio.c \
-	microbitfs.c \
-	microbithal_js.c \
+	bitsflowfs.c \
+	bitsflowhal_js.c \
 	main.c \
 	mphalport.c \
 	modmachine.c \
@@ -71,29 +72,29 @@ SRC_C += $(addprefix $(CODAL_PORT)/, \
 	drv_system.c \
 	help.c \
 	iters.c \
-	microbit_accelerometer.c \
-	microbit_button.c \
-	microbit_compass.c \
-	microbit_display.c \
-	microbit_i2c.c \
-	microbit_image.c \
-	microbit_constimage.c \
-	microbit_microphone.c \
-	microbit_pin.c \
-	microbit_pinaudio.c \
-	microbit_pinmode.c \
-	microbit_sound.c \
-	microbit_soundeffect.c \
-	microbit_soundevent.c \
-	microbit_speaker.c \
-	microbit_spi.c \
-	microbit_uart.c \
+	bitsflow_accelerometer.c \
+	bitsflow_button.c \
+	bitsflow_compass.c \
+	bitsflow_display.c \
+	bitsflow_i2c.c \
+	bitsflow_image.c \
+	bitsflow_constimage.c \
+	bitsflow_microphone.c \
+	bitsflow_pin.c \
+	bitsflow_pinaudio.c \
+	bitsflow_pinmode.c \
+	bitsflow_sound.c \
+	bitsflow_soundeffect.c \
+	bitsflow_soundevent.c \
+	bitsflow_speaker.c \
+	bitsflow_spi.c \
+	bitsflow_uart.c \
 	modantigravity.c \
 	modaudio.c \
 	modlog.c \
 	modlove.c \
 	modmachine.c \
-	modmicrobit.c \
+	modbitsflow.c \
 	modmusic.c \
 	modmusictunes.c \
 	modos.c \
@@ -110,11 +111,17 @@ SRC_C += \
 	shared/runtime/interrupt_char.c \
 	shared/runtime/pyexec.c \
 	shared/runtime/stdout_helpers.c \
-	$(abspath $(LOCAL_LIB_DIR)/sam/main.c) \
-	$(abspath $(LOCAL_LIB_DIR)/sam/reciter.c) \
-	$(abspath $(LOCAL_LIB_DIR)/sam/render.c) \
-	$(abspath $(LOCAL_LIB_DIR)/sam/sam.c) \
-	$(abspath $(LOCAL_LIB_DIR)/sam/debug.c) \
+	$(CODAL_PORT)/sam/main.c \
+	$(CODAL_PORT)/sam/reciter.c \
+	$(CODAL_PORT)/sam/render.c \
+	$(CODAL_PORT)/sam/sam.c \
+	$(CODAL_PORT)/sam/debug.c \
+
+# $(abspath $(LOCAL_LIB_DIR)/sam/main.c) \
+# $(abspath $(LOCAL_LIB_DIR)/sam/reciter.c) \
+# $(abspath $(LOCAL_LIB_DIR)/sam/render.c) \
+# $(abspath $(LOCAL_LIB_DIR)/sam/sam.c) \
+# $(abspath $(LOCAL_LIB_DIR)/sam/debug.c) \
 
 SRC_O += \
 	lib/utils/gchelper_m3.o \
@@ -139,7 +146,7 @@ $(MBIT_VER_FILE): FORCE
 	$(Q)mkdir -p $(HEADER_BUILD)
 	(cd $(TOP) && $(PYTHON) py/makeversionhdr.py $(abspath $(MP_VER_FILE)))
 	$(PYTHON) $(TOP)/py/makeversionhdr.py $(MBIT_VER_FILE).pre
-	$(CAT) $(MBIT_VER_FILE).pre | $(SED) s/MICROPY_/MICROBIT_/ > $(MBIT_VER_FILE)
+	$(CAT) $(MBIT_VER_FILE).pre | $(SED) s/MICROPY_/BITSFLOW_/ > $(MBIT_VER_FILE)
 
 $(BUILD)/micropython.js: $(OBJ) jshal.js simulator-js
 	$(ECHO) "LINK $(BUILD)/firmware.js"

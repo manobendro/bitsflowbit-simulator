@@ -1,6 +1,6 @@
 import {
-  MICROBIT_HAL_MICROPHONE_EVT_THRESHOLD_HIGH,
-  MICROBIT_HAL_MICROPHONE_EVT_THRESHOLD_LOW,
+  BITSFLOW_HAL_MICROPHONE_EVT_THRESHOLD_HIGH,
+  BITSFLOW_HAL_MICROPHONE_EVT_THRESHOLD_LOW,
 } from "./constants";
 import { RangeSensor, State } from "./state";
 
@@ -52,9 +52,9 @@ export class Microphone {
     const high = this.soundLevel.highThreshold!;
     if (this.soundLevelCallback) {
       if (prev > low && curr <= low) {
-        this.soundLevelCallback(MICROBIT_HAL_MICROPHONE_EVT_THRESHOLD_LOW);
+        this.soundLevelCallback(BITSFLOW_HAL_MICROPHONE_EVT_THRESHOLD_LOW);
       } else if (prev < high && curr >= high!) {
-        this.soundLevelCallback(MICROBIT_HAL_MICROPHONE_EVT_THRESHOLD_HIGH);
+        this.soundLevelCallback(BITSFLOW_HAL_MICROPHONE_EVT_THRESHOLD_HIGH);
       }
     }
   }
