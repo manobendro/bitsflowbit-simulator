@@ -11,6 +11,7 @@
     "test": "vitest",
     "ci:update-version": "update-ci-version",
     "deploy": "website-deploy-aws",
+    "deploy:pages": "wrangler pages deploy dist --project-name=bitsflowbit-simulator --branch=main --commit-dirty=true",
     "invalidate": "aws cloudfront create-invalidation --distribution-id $(printenv ${STAGE}_CLOUDFRONT_DISTRIBUTION_ID) --paths \"/*\""
   },
   "repository": {

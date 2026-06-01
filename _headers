@@ -1,0 +1,19 @@
+# Cloudflare Pages HTTP headers for the bitsflow:bit simulator.
+# https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Cloudflare Pages already serves the correct Content-Type for .wasm
+# (application/wasm) and .js, so no MIME configuration is needed here.
+
+/*
+  X-Content-Type-Options: nosniff
+  # The simulator is designed to be embedded as an iframe on other origins.
+  Cross-Origin-Resource-Policy: cross-origin
+
+# HTML entry points: always revalidate so deploys are picked up immediately.
+/*.html
+  Cache-Control: no-cache
+
+# Build artifacts (firmware.wasm / firmware.js / simulator.js) are not
+# content-hashed, so use a short cache with revalidation.
+/build/*
+  Cache-Control: public, max-age=600, must-revalidate

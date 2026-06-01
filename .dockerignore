@@ -1,0 +1,14 @@
+# VCS
+.git
+.github
+
+# Build outputs (rebuilt inside the container)
+build
+src/build
+
+# Node
+node_modules
+
+# Editor / OS
+*.log
+.DS_Store

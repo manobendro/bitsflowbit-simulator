@@ -1,4 +1,6 @@
 src/build
 build/
+dist/
 node_modules
 /.vscode
+.wrangler/
